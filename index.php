@@ -2,9 +2,10 @@
 
 require 'includes/db.php';
 
-$sql_query = "SELECT * FROM article ORDER BY time_of";
+## Fetch connection to DB
+$db_connection = get_db_connection();
 
-$results = mysqli_query($db_connection, $sql_query);
+$results = mysqli_query($db_connection, "SELECT * FROM article ORDER BY time_of");
 
 ## Check for error in query
 if ( $results === false) {
@@ -13,26 +14,31 @@ if ( $results === false) {
     $articles = mysqli_fetch_all($results, MYSQLI_ASSOC);
 }
 
-
 ?>
 <?php require 'includes/header.php'; ?>
-        <?php if (empty($articles)): ?>
-            <p>No articles found.</p>
-        <?php else: ?>
 
-        <ul>
-            <?php foreach ($articles as $article) { ?>
-                <li>
-                    <article>
-                        <h3>
-                            <a href ="article.php?id=<?= $article['id']; ?>"><?= $article['title'];?>
-                            </a>
-                        </h3>
-                        <p><?php echo $article['body']; ?></p>
-                    </article>
-                </li>
-            <?php } ?>
-        </ul>
+<a href="create-article.php">Create article</a>
 
-        <?php endif; ?>
+<?php if (empty($articles)): ?>
+    <p>No articles found.</p>
+<?php else: ?>
+
+<ul>
+    <?php foreach ($articles as $article) { ?>
+        <li>
+            <article>
+                <h3>
+                    <a href ="article.php?id=<?= $article['id']; ?>">
+                        <?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?>
+                    </a>
+                </h3>
+                <p>
+                    <?= htmlspecialchars($article['body'], ENT_QUOTES, 'UTF-8'); ?>
+                </p>
+            </article>
+        </li>
+    <?php } ?>
+</ul>
+
+<?php endif; ?>
 <?php require 'includes/footer.php'; ?>

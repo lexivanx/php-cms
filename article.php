@@ -2,6 +2,9 @@
 
 require 'includes/db.php';
 
+## Fetch connection to DB
+$db_connection = get_db_connection();
+
 ### Prevent SQL injection - is id a number and is it set
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = $_GET['id'];
@@ -26,8 +29,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <?php else: ?>
 
             <article>
-                <h3><?php echo $article['title']; ?></h3>
-                <p><?php echo $article['body']; ?></p>
+                <h3><?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p><?=  htmlspecialchars($article['body'], ENT_QUOTES, 'UTF-8'); ?></p>
             </article>
 
         <?php endif; ?>
