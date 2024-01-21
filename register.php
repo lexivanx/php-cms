@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if (mysqli_stmt_execute($prepared_query)) {
                 // Redirect or show success message
-                header("Location: success_page.php"); // Redirect to a success page
+                header("Location: success-page.php"); // Redirect to a success page
                 exit;
             } else {
                 $error = mysqli_stmt_error($prepared_query);

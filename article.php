@@ -2,6 +2,7 @@
 
 require 'includes/db.php';
 require 'includes/article-funs.php';
+require 'includes/authentication.php';
 
 ## Fetch connection to DB
 $db_connection = getDB();
@@ -18,6 +19,7 @@ if (isset($_GET['id'])) {
 
 ?>
 <?php require 'includes/header.php'; ?>
+        <?php session_start(); ?>
         <?php if ($article === null): ?>
             <p>No articles found.</p>
         <?php else: ?>
@@ -30,14 +32,20 @@ if (isset($_GET['id'])) {
                 <p>Created at: <em> <?= htmlspecialchars($article['time_of'], ENT_QUOTES, 'UTF-8'); ?> </em> </p>
             </article>
 
-            <?php session_start(); ?>
-            <?php if ($_SESSION['username'] == "admin" || $_SESSION['username'] == $article['created_by']): ?>
-                <a href="edit-article.php?id=<?= $article['id']; ?>">Edit</a>
-                <a href="remove-article.php?id=<?= $article['id']; ?>">Delete</a>
+            <?php if (checkAuthentication()): ?>
+
+                <?php if ($_SESSION['username'] == "admin" || $_SESSION['username'] == $article['created_by']): ?>
+                    <a href="edit-article.php?id=<?= $article['id']; ?>">Edit</a>
+                    <a href="remove-article.php?id=<?= $article['id']; ?>">Delete</a>
+                <?php else: ?>
+                    <br>
+                    <p><em>Can't edit or delete!</em></p>
+                <?php endif; ?>
+
             <?php else: ?>
                 <br>
                 <p><em>Can't edit or delete!</em></p>
             <?php endif; ?>
-
+            
         <?php endif; ?>
 <?php require 'includes/footer.php'; ?>
