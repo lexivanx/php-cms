@@ -1,19 +1,36 @@
-<?php 
+<?php
 
 require 'includes/db.php';
 require 'includes/article-funs.php';
 require 'includes/http.php';
-require 'includes/authentication.php';
 
-session_start();
+### Fetch connection to DB
+$db_connection = getDB();
 
-if (!checkAuthentication()) {
-    die ("Not logged in");
+### If ID is not set, print error and exit script
+if (isset($_GET['id'])) {
+
+    $article = getArticle($db_connection, $_GET['id']);
+
+    ## If ID is invalid, print error and exit script
+    if ($article) {
+
+        $id = $article['id'];
+        $title = $article['title'];
+        $body = $article['body'];
+        $time_of = $article['time_of'];
+
+    } else {
+
+        die("No article found");
+
+    }
+
+} else {
+
+    die("ID not specified, no article found");
+
 }
-
-$title = '';
-$body = '';
-$time_of = '';
 
 ### Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,10 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     ## Check for errors in form
     if(empty($errors)) {
-        ## Fetch connection to DB
-        $db_connection = getDB();
 
-        $prepared_query = mysqli_prepare($db_connection, "INSERT INTO article (title, body, time_of) VALUES (?, ?, ?)");
+        ## Update query
+        $prepared_query = mysqli_prepare($db_connection, "UPDATE article SET title = ?, body = ?, time_of = ? WHERE id = ?");
 
         ## Check for error in query
         if ( $prepared_query === false) {
@@ -43,30 +59,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             # Handle quotes, escape characters, SQL injection etc.
-            mysqli_stmt_bind_param($prepared_query, "sss", $title, $body, $time_of);
+            mysqli_stmt_bind_param($prepared_query, "sssi", $title, $body, $time_of, $id);
 
             if (mysqli_stmt_execute($prepared_query)) {
 
-                # Fetch and print id of new entry
-                $id = mysqli_insert_id($db_connection);
-
                 # Redirect to article page
                 redirectToPath("/php-cms" . "/article.php?id=$id");
-
+                
             } else {
 
                 echo mysqli_stmt_error($prepared_query);
 
             }
         }
+
     }
-    
+
 }
+
 ?>
 
 <?php require 'includes/header.php'; ?>
 
-<h3> Create a new article </h3>
+<h3> Article information </h3>
 
 <?php require 'includes/article.php'; ?>
 

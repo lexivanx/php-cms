@@ -1,9 +1,12 @@
 <?php
 
 require 'includes/db.php';
+require 'includes/authentication.php';
+
+session_start();
 
 ## Fetch connection to DB
-$db_connection = get_db_connection();
+$db_connection = getDB();
 
 $results = mysqli_query($db_connection, "SELECT * FROM article ORDER BY time_of");
 
@@ -17,7 +20,22 @@ if ( $results === false) {
 ?>
 <?php require 'includes/header.php'; ?>
 
-<a href="create-article.php">Create article</a>
+<?php if (checkAuthentication()): ?>
+
+    <p> Currently logged in as: <strong> <?php echo $_SESSION['username']; ?> </strong> </p>
+        <a href="logout.php">Logout</a>
+    <p>
+        <a href="create-article.php">Create article</a>
+    </p>
+
+<?php else: ?>
+
+    <p> No user logged in </p>
+    <a href="login.php">Login</a>
+
+<?php endif; ?>
+
+
 
 <?php if (empty($articles)): ?>
     <p>No articles found.</p>

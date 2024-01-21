@@ -1,6 +1,6 @@
 <?php
 
-function get_db_connection() {
+function getDB() {
     $db_host = "localhost";
     $db_name = "php_cms_db";
     $db_user = "svacc_cms";
