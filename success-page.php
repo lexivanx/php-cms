@@ -1,5 +1,5 @@
 <?php require 'includes/header.php'; ?>
 
-<p> <strong> Registration successful! </strong> </p>
+<p class="success-message"> <strong> Registration successful! </strong> </p>
 
 <?php require 'includes/footer.php'; ?>

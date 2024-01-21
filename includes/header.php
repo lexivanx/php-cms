@@ -3,6 +3,7 @@
 <head>
     <title>Create and read blogs!</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/php-cms/css/style.css">
 </head>
 <body>
 

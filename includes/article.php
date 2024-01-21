@@ -1,7 +1,7 @@
 <?php if (!empty($errors)): ?>
     <ul>
         <?php foreach ($errors as $error) { ?>
-            <li><?= $error; ?></li>
+            <li class="error-message"><?= $error; ?></li>
         <?php } ?>
     </ul>
 <?php endif; ?>

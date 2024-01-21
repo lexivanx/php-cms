@@ -20,6 +20,7 @@ if ( $results === false) {
 ?>
 <?php require 'includes/header.php'; ?>
 
+<div class="logged-in-info">
 <?php if (checkAuthentication()): ?>
 
     <p> Currently logged in as: <strong> <?php echo $_SESSION['username']; ?> </strong> </p>
@@ -35,7 +36,7 @@ if ( $results === false) {
     <a href="register.php">Register</a>
 
 <?php endif; ?>
-
+</div>
 
 
 <?php if (empty($articles)): ?>

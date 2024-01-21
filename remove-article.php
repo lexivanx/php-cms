@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php require 'includes/header.php'; ?>
 
-<h3> Remove article </h3>
+<h4> Remove article </h4>
 
 <form method="post">
     <p>Are you sure you want to remove this article?</p>

@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php require 'includes/header.php'; ?>
 
-<h3> Article information </h3>
+<h4> Article information </h4>
 
 <?php require 'includes/article.php'; ?>
 

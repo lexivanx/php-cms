@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
 <?php require 'includes/header.php'; ?>
         <?php session_start(); ?>
         <?php if ($article === null): ?>
-            <p>No articles found.</p>
+            <p class="error-message">No articles found.</p>
         <?php else: ?>
 
             <article>
@@ -35,8 +35,8 @@ if (isset($_GET['id'])) {
             <?php if (checkAuthentication()): ?>
 
                 <?php if ($_SESSION['username'] == "admin" || $_SESSION['username'] == $article['created_by']): ?>
-                    <a href="edit-article.php?id=<?= $article['id']; ?>">Edit</a>
-                    <a href="remove-article.php?id=<?= $article['id']; ?>">Delete</a>
+                    <a href="edit-article.php?id=<?= $article['id']; ?>" class="edit-link">Edit</a>
+                    <a href="remove-article.php?id=<?= $article['id']; ?>" class="delete-link">Delete</a>
                 <?php else: ?>
                     <br>
                     <p><em>Can't edit or delete!</em></p>

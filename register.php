@@ -18,39 +18,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Fetch connection to DB
         $db_connection = getDB();
 
-        // Prepare the query
-        $prepared_query = mysqli_prepare($db_connection, "INSERT INTO user (username, password) VALUES (?, ?)");
+        // Check if username already exists
+        $existing_user_query = mysqli_prepare($db_connection, "SELECT COUNT(*) FROM user WHERE username = ?");
+        mysqli_stmt_bind_param($existing_user_query, "s", $username);
+        mysqli_stmt_execute($existing_user_query);
+        mysqli_stmt_bind_result($existing_user_query, $existing_user_count);
+        mysqli_stmt_fetch($existing_user_query);
+        mysqli_stmt_close($existing_user_query);
 
-        if ($prepared_query === false) {
-            $error = mysqli_error($db_connection);
+        if ($existing_user_count > 0) {
+            $error = 'Username already exists. Please choose a different username.';
         } else {
-            // Secure password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            // Prepare the query
+            $prepared_query = mysqli_prepare($db_connection, "INSERT INTO user (username, password) VALUES (?, ?)");
 
-            // Bind and execute
-            mysqli_stmt_bind_param($prepared_query, "ss", $username, $hashed_password);
-            
-            if (mysqli_stmt_execute($prepared_query)) {
-                // Redirect or show success message
-                header("Location: success-page.php"); // Redirect to a success page
-                exit;
+            if ($prepared_query === false) {
+                $error = mysqli_error($db_connection);
             } else {
-                $error = mysqli_stmt_error($prepared_query);
+                // Secure password
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                // Bind and execute
+                mysqli_stmt_bind_param($prepared_query, "ss", $username, $hashed_password);
+
+                if (mysqli_stmt_execute($prepared_query)) {
+                    // Redirect or show success message
+                    header("Location: success-page.php"); // Redirect to a success page
+                    exit;
+                } else {
+                    $error = mysqli_stmt_error($prepared_query);
+                }
             }
         }
     }
-    
+
 }
 
 ?>
 
 <?php require 'includes/header.php'; ?>
 
-<h3> User registration </h3>
+<h4> User registration </h4>
 
 <?php if (!empty($error)) : ?>
 
-    <p><?= $error ?></p>
+    <p class="error-message"><?= $error ?></p>
 
 <?php endif; ?>
 

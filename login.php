@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     } else {
 
-        $error = "login failed";
+        $error = "Username and password are required";
 
     }
     
@@ -34,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <?php require 'includes/header.php'; ?>
 
-<h3> User login </h3>
+<h4> User login </h4>
 
 <?php if (!empty($error)) : ?>
 
-    <p><?= $error ?></p>
+    <p class="error-message"><?= $error ?></p>
 
 <?php endif; ?>
 
