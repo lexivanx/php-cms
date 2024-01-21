@@ -32,6 +32,7 @@ if ( $results === false) {
 
     <p> No user logged in </p>
     <a href="login.php">Login</a>
+    <a href="register.php">Register</a>
 
 <?php endif; ?>
 
@@ -53,6 +54,13 @@ if ( $results === false) {
                 <p>
                     <?= htmlspecialchars($article['body'], ENT_QUOTES, 'UTF-8'); ?>
                 </p>
+                <p>
+                    Created by: <strong> <?= htmlspecialchars($article['created_by'], ENT_QUOTES, 'UTF-8'); ?> </strong> 
+                </p>
+                <p>
+                    Created at: <em> <?= htmlspecialchars($article['time_of'], ENT_QUOTES, 'UTF-8'); ?> </em> 
+                </p>
+
             </article>
         </li>
     <?php } ?>
