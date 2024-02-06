@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Basic validation for user and pass
     if (!$username || !$password) {
         $error = 'Username and password are required';
+    } elseif (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
+        $error = 'Username should only contain letters and numbers';
     } else {
         // Fetch connection to DB
         $db_connection = getDB();
@@ -70,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div>
     <label for="username">Username</label>
-    <input type="text" name="username" id="username">
+    <input type="text" name="username" id="username" placeholder="Only letters and numbers" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
 </div>
 
 <div>

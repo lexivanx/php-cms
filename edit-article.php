@@ -3,6 +3,13 @@
 require 'includes/db.php';
 require 'includes/article-funs.php';
 require 'includes/http.php';
+require 'includes/authentication.php';
+
+session_start();
+
+if (!checkAuthentication()) {
+    die("You don't have permission to edit or remove");
+}
 
 ### Fetch connection to DB
 $db_connection = getDB();
@@ -19,6 +26,13 @@ if (isset($_GET['id'])) {
         $title = $article['title'];
         $body = $article['body'];
         $time_of = $article['time_of'];
+        $created_by = $article['created_by'];
+
+        if ($_SESSION['username'] != "admin" && $_SESSION['username'] != $article['created_by']) {
+
+            die("You don't have permission to edit or remove");
+
+        }
 
     } else {
 

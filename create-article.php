@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_stmt_execute($prepared_query)) {
 
-                # Fetch and print id of new entry
+                # Fetch id of new entry
                 $id = mysqli_insert_id($db_connection);
 
                 # Redirect to article page

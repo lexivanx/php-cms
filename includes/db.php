@@ -1,5 +1,6 @@
 <?php
 
+### get DB connection via host, name, user, pass
 function getDB() {
     $db_host = "localhost";
     $db_name = "php_cms_db";
